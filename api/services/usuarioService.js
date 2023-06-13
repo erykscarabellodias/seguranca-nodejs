@@ -30,7 +30,16 @@ class UsuarioService {
         } catch (e) {
             throw new Error('Houve um erro ao cadastrar o usuário');
         }
+    }
 
+    async listar() {
+        try {
+            const usuarios = database.usuarios.findAll();
+
+            return usuarios;
+        } catch (e) {
+            throw new Error('Houve um erro ao listar os usuários');
+        }
     }
 }
 

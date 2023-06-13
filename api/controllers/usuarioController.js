@@ -16,6 +16,16 @@ class UsuarioController {
             return res.status(400).send({ message: error.message });
         }
     }
+
+    async listar(req, res) {
+        try {
+            const usuarios = await this.service.listar();
+
+            return res.status(200).send(usuarios);
+        } catch (error) {
+            return res.status(400).send({ message: error.message });
+        }
+    }
 }
 
 module.exports = UsuarioController;
