@@ -1,13 +1,15 @@
 const UsuarioService = require('../services/usuarioService');
 
-const usuarioService = new UsuarioService;
-
 class UsuarioController {
-    static async cadastrar(req, res) {
+    constructor() {
+        this.service = new UsuarioService();
+    }
+
+    async cadastrar(req, res) {
         const { nome, email, senha } = req.body;
 
         try {
-            const usuario = await usuarioService.cadastrar({ nome, email, senha });
+            const usuario = await this.service.cadastrar({ nome, email, senha });
 
             return res.status(201).send(usuario);
         } catch (error) {
