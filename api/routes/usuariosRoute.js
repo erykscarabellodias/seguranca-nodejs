@@ -1,9 +1,12 @@
 const { Router } = require('express');
 const UsuarioController = require('../controllers/usuarioController');
+const autenticado = require('../middlewares/autenticado');
 
 const router = new Router();
 
 const controller = new UsuarioController();
+
+router.use(autenticado);
 
 router
     .post('/usuarios', controller.cadastrar.bind(controller))

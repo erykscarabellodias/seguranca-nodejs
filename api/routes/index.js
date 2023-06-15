@@ -10,7 +10,7 @@ module.exports = app => {
   app.use(
     bodyParser.json(),
     produto,
-    usuario,
-    auth
+    auth,
+    usuario
   )
 }
