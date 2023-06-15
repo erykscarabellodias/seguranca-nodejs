@@ -26,6 +26,21 @@ class UsuarioController {
             return res.status(400).send({ message: error.message });
         }
     }
+
+    async detalhar(req, res) {
+        const { id } = req.params;
+
+        if (!id) {
+            throw new Error('O parâmetro id é obrigatório');
+        }
+
+        try {
+            const usuario = await this.service.detalhar(id);
+            return res.status(200).send(usuario);
+        } catch (error) {
+            return res.status(400).send({ message: error.message });
+        }
+    }
 }
 
 module.exports = UsuarioController;

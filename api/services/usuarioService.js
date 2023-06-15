@@ -41,6 +41,28 @@ class UsuarioService {
             throw new Error('Houve um erro ao listar os usuários');
         }
     }
+
+    async detalhar(id) {
+        try {
+            const usuario = await database.usuarios.findOne({
+                where: {
+                    id
+                }
+            });
+
+            if (usuario === null) {
+                throw new Error('Este usuário não existe')
+            }
+
+            return usuario;
+        } catch (e) {
+            if (e.message === 'Este usuário não existe') {
+                throw new Error(e.message);
+            }
+
+            throw new Error('Houve um erro ao buscar seu usuário');
+        }
+    }
 }
 
 module.exports = UsuarioService;
