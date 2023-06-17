@@ -76,6 +76,62 @@ class SegurancaService {
             throw new Error('Houve um erro ao cadastrar seu usuário')
         }
     }
+
+    async cadastrarPermissoesRoles(dto) {
+        const { roleId, permissoes } = dto;
+
+        try {
+            const role = await database.roles.findOne({
+                include: [
+                    {
+                        model: database.permissoes,
+                        as: 'roles_das_permissoes',
+                        attributes: ['id', 'nome', 'descricao']
+                    }
+                ],
+                where: {
+                    id: roleId
+                }
+            });
+
+            if (!role) {
+                throw new Error('Esta role não existe');
+            }
+
+            const permissoesCadastradas = await database.permissoes.findAll({
+                where: {
+                    id: {
+                        [Sequelize.Op.in]: permissoes
+                    }
+                }
+            });
+
+            await role.removeRoles_das_permissoes(role.roles_das_permissoes);
+
+            await role.addRoles_das_permissoes(permissoesCadastradas);
+
+            const roleAtualizada = await database.roles.findOne({
+                include: [
+                    {
+                        model: database.permissoes,
+                        as: 'roles_das_permissoes',
+                        attributes: ['id', 'nome', 'descricao']
+                    }
+                ],
+                where: {
+                    id: roleId
+                }
+            });
+
+            return roleAtualizada;
+        } catch (e) {
+            if (e.message === 'Esta role não existe') {
+                throw new Error(e.message);
+            }
+
+            throw new Error(e.message);
+        }
+    }
 }
 
 module.exports = SegurancaService;
