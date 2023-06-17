@@ -69,8 +69,6 @@ class SegurancaService {
 
             return usuarioAtualizado;
         } catch (e) {
-            console.log(e)
-
             if (e.message === 'Este usuário não existe') {
                 throw new Error(e.message);
             }
